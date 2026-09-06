@@ -93,7 +93,7 @@ POST `/documentos`
 
 Ejemplo:
 
-{
+{  
 "titulo": "Memo reunión de profesores",  
 "tipo_documento_id": 1,  
 "fecha": "2026-09-02",  
