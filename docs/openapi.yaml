@@ -1,0 +1,473 @@
+openapi: 3.0.3
+
+info:
+  title: API Gestor Documental Chorombo Bajo
+  version: 1.0.0
+  description: >
+    API REST desarrollada para la Escuela Básica G-733 Chorombo Bajo.
+    Permite administrar documentos institucionales mediante operaciones CRUD,
+    consultar los tipos documentales disponibles y almacenar archivos asociados.
+
+servers:
+  - url: http://localhost/chorombo_backend/api/v1
+    description: Servidor local XAMPP
+
+tags:
+  - name: Documentos
+    description: Operaciones CRUD de documentos
+  - name: Tipos de documento
+    description: Consulta de categorías documentales
+  - name: Archivos
+    description: Almacenamiento de archivos asociados a documentos
+
+paths:
+  /tipos-documento:
+    get:
+      tags:
+        - Tipos de documento
+      summary: Obtener tipos de documento
+      description: Retorna todos los tipos documentales disponibles.
+      responses:
+        "200":
+          description: Tipos de documento obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  datos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TipoDocumento"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+  /documentos:
+    get:
+      tags:
+        - Documentos
+      summary: Obtener todos los documentos
+      description: Retorna el listado completo de documentos registrados.
+      responses:
+        "200":
+          description: Documentos obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  datos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Documento"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+    post:
+      tags:
+        - Documentos
+      summary: Crear un documento
+      description: >
+        Crea un nuevo registro documental. El archivo indicado debe haber sido
+        previamente cargado mediante POST /archivos.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocumentoEntrada"
+
+            example:
+              titulo: Memo reunión de profesores
+              tipo_documento_id: 1
+              fecha: "2026-09-02"
+              descripcion: Documento correspondiente a una reunión de profesores.
+              archivo: uploads/documentos/abc123.pdf
+
+      responses:
+        "201":
+          description: Documento creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  mensaje:
+                    type: string
+                    example: Documento creado correctamente
+                  datos:
+                    $ref: "#/components/schemas/Documento"
+
+        "400":
+          $ref: "#/components/responses/SolicitudInvalida"
+
+        "422":
+          $ref: "#/components/responses/DatosInvalidos"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+  /documentos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identificador del documento
+        schema:
+          type: integer
+          minimum: 1
+        example: 1
+
+    get:
+      tags:
+        - Documentos
+      summary: Obtener un documento
+      description: Retorna un documento específico según su identificador.
+
+      responses:
+        "200":
+          description: Documento encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  datos:
+                    $ref: "#/components/schemas/Documento"
+
+        "404":
+          $ref: "#/components/responses/DocumentoNoEncontrado"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+    put:
+      tags:
+        - Documentos
+      summary: Actualizar un documento
+      description: >
+        Actualiza completamente un documento existente.
+        Todos los campos son obligatorios. Si se indica un archivo diferente,
+        el archivo anterior será eliminado del almacenamiento.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocumentoEntrada"
+
+            example:
+              titulo: Memo reunión actualizado
+              tipo_documento_id: 1
+              fecha: "2026-09-02"
+              descripcion: Documento actualizado.
+              archivo: uploads/documentos/nuevo456.pdf
+
+      responses:
+        "200":
+          description: Documento actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  mensaje:
+                    type: string
+                    example: Documento actualizado correctamente
+                  datos:
+                    $ref: "#/components/schemas/Documento"
+
+        "400":
+          $ref: "#/components/responses/SolicitudInvalida"
+
+        "404":
+          $ref: "#/components/responses/DocumentoNoEncontrado"
+
+        "422":
+          $ref: "#/components/responses/DatosInvalidos"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+    delete:
+      tags:
+        - Documentos
+      summary: Eliminar un documento
+      description: >
+        Elimina el registro documental y elimina también el archivo físico
+        asociado cuando sea posible.
+
+      responses:
+        "200":
+          description: Documento eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  mensaje:
+                    type: string
+                    example: Documento y archivo asociados eliminados correctamente
+
+        "404":
+          $ref: "#/components/responses/DocumentoNoEncontrado"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+  /archivos:
+    post:
+      tags:
+        - Archivos
+      summary: Subir archivo
+      description: >
+        Almacena físicamente un archivo que posteriormente puede ser asociado
+        a un documento.
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - archivo
+
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+                  description: Archivo a almacenar. Tamaño máximo 10 MB.
+
+      responses:
+        "201":
+          description: Archivo subido correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+                  mensaje:
+                    type: string
+                    example: Archivo subido correctamente
+
+                  datos:
+                    type: object
+                    properties:
+                      archivo:
+                        type: string
+                        example: uploads/documentos/abc123.pdf
+
+                      nombre_original:
+                        type: string
+                        example: memo_reunion.pdf
+
+                      tipo:
+                        type: string
+                        example: application/pdf
+
+                      tamano:
+                        type: integer
+                        example: 591617
+
+        "400":
+          description: No se recibió archivo o ocurrió un error durante la subida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        "422":
+          description: Archivo no permitido o inválido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        "500":
+          $ref: "#/components/responses/ErrorServidor"
+
+components:
+  schemas:
+    TipoDocumento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+
+        nombre:
+          type: string
+          example: Memo
+
+    DocumentoEntrada:
+      type: object
+
+      required:
+        - titulo
+        - tipo_documento_id
+        - fecha
+        - descripcion
+        - archivo
+
+      properties:
+        titulo:
+          type: string
+          maxLength: 255
+          example: Memo reunión de profesores
+
+        tipo_documento_id:
+          type: integer
+          minimum: 1
+          example: 1
+
+        fecha:
+          type: string
+          format: date
+          example: "2026-09-02"
+
+        descripcion:
+          type: string
+          example: Documento correspondiente a una reunión de profesores.
+
+        archivo:
+          type: string
+          maxLength: 255
+          example: uploads/documentos/abc123.pdf
+
+    Documento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+
+        titulo:
+          type: string
+          example: Memo reunión de profesores
+
+        tipo_documento_id:
+          type: integer
+          example: 1
+
+        tipo_documento:
+          type: string
+          example: Memo
+
+        fecha:
+          type: string
+          format: date
+          example: "2026-09-02"
+
+        descripcion:
+          type: string
+          example: Documento correspondiente a una reunión de profesores.
+
+        archivo:
+          type: string
+          example: uploads/documentos/abc123.pdf
+
+        created_at:
+          type: string
+          example: "2026-09-02 20:15:30"
+
+        updated_at:
+          type: string
+          example: "2026-09-02 20:15:30"
+
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+
+        mensaje:
+          type: string
+          example: Los datos enviados no son válidos
+
+  responses:
+    SolicitudInvalida:
+      description: Solicitud o JSON inválido
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            jsonInvalido:
+              value:
+                status: error
+                mensaje: JSON inválido
+
+            cuerpoInvalido:
+              value:
+                status: error
+                mensaje: El cuerpo de la petición debe ser un objeto JSON
+
+    DatosInvalidos:
+      description: Los datos enviados no cumplen las validaciones
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: error
+
+              mensaje:
+                type: string
+                example: Los datos enviados no son válidos
+
+              errores:
+                type: array
+                items:
+                  type: string
+                example:
+                  - El campo 'titulo' es obligatorio
+
+    DocumentoNoEncontrado:
+      description: El documento solicitado no existe
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: error
+            mensaje: Documento no encontrado
+
+    ErrorServidor:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: error
+            mensaje: Error interno del servidor

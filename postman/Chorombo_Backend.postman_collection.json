@@ -1,0 +1,470 @@
+{
+  "info": {
+    "_postman_id": "465e1f8a-c889-457c-9e27-4fb80116928b",
+    "name": "Chorombo Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56881700",
+    "_collection_link": "https://go.postman.co/collection/56881700-465e1f8a-c889-457c-9e27-4fb80116928b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Tipos de Documentos",
+      "item": [
+        {
+          "name": "GET | Listar tipos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/tipos-documento",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "tipos-documento"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Archivos",
+      "item": [
+        {
+          "name": "POST | Subir archivo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "archivo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/archivos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "archivos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Sin archivo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/archivos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "archivos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Formato no válido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "archivo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/DIOS REY GOSU/Downloads/prueba.txt"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/archivos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "archivos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documentos - CRUD",
+      "item": [
+        {
+          "name": "GET | Listar documentos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET | Documentos por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Crear documento",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Memo reunión de profesores\",\r\n    \"tipo_documento_id\": 1,\r\n    \"fecha\": \"2026-09-02\",\r\n    \"descripcion\": \"Documento correspondiente a la reunión mensual de profesores.\",\r\n    \"archivo\": \"uploads/documentos/fcff31da8e39ba7217424a3336d4e8e8.pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT | Actualizar documento",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Memo reunión actualizado\",\r\n    \"tipo_documento_id\": 1,\r\n    \"fecha\": \"2026-09-02\",\r\n    \"descripcion\": \"Documento actualizado mediante la API.\",\r\n    \"archivo\": \"uploads/documentos/482ce7459bb76f0cee7f7c4ce4bfd297.pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos/6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE | Eliminar documento",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos/6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pruebas de error",
+      "item": [
+        {
+          "name": "GET | ID inexistente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos",
+                "999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Campos faltantes",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"\",\r\n    \"tipo_documento_id\": 1,\r\n    \"fecha\": \"2026-09-02\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Tipo documental inexistente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Documento prueba\",\r\n    \"tipo_documento_id\": 999,\r\n    \"fecha\": \"2026-09-02\",\r\n    \"descripcion\": \"Prueba de tipo documental inexistente.\",\r\n    \"archivo\": \"uploads/documentos/ARCHIVO_REAL.pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Archivo inexistente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Documento archivo inexistente\",\r\n    \"tipo_documento_id\": 1,\r\n    \"fecha\": \"2026-09-02\",\r\n    \"descripcion\": \"Prueba de referencia inexistente.\",\r\n    \"archivo\": \"uploads/documentos/no_existe.pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | JSON inválido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Memo\",\r\n    \"tipo_documento_id\": 1,\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT | ID inexistente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"titulo\": \"Prueba\",\r\n    \"tipo_documento_id\": 1,\r\n    \"fecha\": \"2026-09-02\",\r\n    \"descripcion\": \"Documento de prueba.\",\r\n    \"archivo\": \"uploads/documentos/77d63fd91967aa607e2d8158fb97e608.pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos",
+                "999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST | Cuerpo no es JSON",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\"HOLA\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/chorombo_backend/api/v1/documentos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "chorombo_backend",
+                "api",
+                "v1",
+                "documentos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
