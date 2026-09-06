@@ -94,9 +94,9 @@ POST `/documentos`
 Ejemplo:
 
 {
-"titulo": "Memo reunión de profesores",
-"tipo_documento_id": 1,
-"fecha": "2026-09-02",
-"descripcion": "Documento correspondiente a una reunión de profesores.",
-"archivo": "uploads/documentos/abc123.pdf"
+"titulo": "Memo reunión de profesores",  
+"tipo_documento_id": 1,  
+"fecha": "2026-09-02",  
+"descripcion": "Documento correspondiente a una reunión de profesores.",  
+"archivo": "uploads/documentos/abc123.pdf"  
 }
